@@ -12,6 +12,12 @@ pipeline {
                 echo 'Docker job'
                 sh 'sudo docker ps -a'
                 sh 'sudo docker run -it -d ubuntu'
+                
+                
+                
+                sh 'sudo docker rm -f $(sudo docker ps -q -a)'
+                sh 'sudo docker build /home/ubuntu/jenkins/workspace/test -t new'
+                sh 'sudo docker run -it -p 80:80 -d new'
             }
         }
         
