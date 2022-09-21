@@ -2,9 +2,25 @@ pipeline {
     agent any
 
     stages {
-        stage('Hello') {
+        stage('build') {
             steps {
-                echo 'Hello World'
+                echo 'Only git code is commited'
+            }
+        }
+        stage('test') {
+            steps {
+                echo 'Docker job'
+                sudo docker rm -f $(sudo docker ps -q -a)
+                sudo docker build /home/ubuntu/jenkins/workspace/test -t new
+                sudo docker run -it -p 80:80 -d new
+            }
+        }
+        stage('prod') {
+            steps {
+                echo 'k8s job'
+                sudo docker rm -f $(sudo docker ps -q -a)
+                sudo docker build /home/ubuntu/jenkins/workspace/prod -t website
+                sudo docker run -it -p 82:80 -d website
             }
         }
     }
