@@ -10,14 +10,14 @@ pipeline {
         stage('test') {
             steps {
                 echo 'Docker job'
-                sh 'sudo docker ps -a'
-                sh 'sudo docker run -it -d ubuntu'
+                sh 'docker ps -a'
+                sh 'docker run -it -d ubuntu'
                 
                 
                 
-                sh 'sudo docker rm -f $(sudo docker ps -q -a)'
-                sh 'sudo docker build /home/ubuntu/jenkins/workspace/test -t new'
-                sh 'sudo docker run -it -p 80:80 -d new'
+                sh 'docker rm -f $(docker ps -q -a)'
+                sh 'docker build /home/ubuntu/jenkins/workspace/test -t new'
+                sh 'docker run -it -p 80:80 -d new'
             }
         }
         
