@@ -23,14 +23,11 @@ pipeline {
                sh 'docker login -u megmahajan -p ${docker_hub_cred}'
             }
                sh 'docker push megmahajan/test'
-        }}
+        }
         stage('deploy_on_k8s') {
             steps {
                 sh 'kubectl apply -f k8s_deploy.yaml'
             }
         }
-        
-        
-        
     }
 }
