@@ -2,24 +2,30 @@ pipeline {
     agent any
 
     stages {
-        stage('build') {
+        stage('git_clone') {
             steps {
                 echo 'Only git code is commited'
             }
         }
-        stage('test') {
+        stage('build docker image') {
             steps {
                 echo 'Docker job'
                 sh 'docker ps -a'
                 sh 'docker run -it -d ubuntu'
-                
-                
-                
+              
                 sh 'docker rm -f $(docker ps -q -a)'
-                sh 'docker build /home/ubuntu/jenkins/workspace/test -t new'
-                sh 'docker run -it -p 80:80 -d new'
+                sh 'docker build -t megmahajan/test .'
             }
         }
+        stage('docker_push'){
+            steps{
+               withCredentials([string(credentialsId: 'DOCKER_HUB', variable: 'jenkins')]) {
+               sh 'docker login -u megmahajan -p ${DOCKER_HUB}'
+            }
+               sh 'docker push megmahajan/test'
+        }}
+        
+        
         
     }
 }
