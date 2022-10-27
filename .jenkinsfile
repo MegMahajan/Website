@@ -18,9 +18,10 @@ pipeline {
             }
         }
         stage('docker_push'){
+     
             steps{
-               withCredentials([string(credentialsId: 'docker_hub_cred', variable: 'docker_hub_cred')])  {
-               sh 'docker login -u megmahajan -p ${docker_hub_cred}'
+                 withCredentials([string(credentialsId: '', variable: 'docker_hub_cred')]) {
+                 sh 'docker login -u megmahajan -p ${docker_hub_cred}'
             }
                sh 'docker push megmahajan/test'
         }
